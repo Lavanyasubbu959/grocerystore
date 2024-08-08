@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block title %}Product Detail{% endblock %}
+{% block content %}
+
+<!-- Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom Styles -->
+<style>
+  
+        body {
+            font-family: SF Pro SC,SF Pro Display,PingFang SC,Helvetica Neue,Helvetica,"Segoe UI",SegoeUI,Arial,sans-serif;
+        }
+    
+    .product-container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        margin-top: 20px;
+    }
+ .product-img {
+    flex: 1;
+    max-width: 500px; /* Increased max-width for larger image size */
+    margin-right: 20px;
+}
+.product-img img {
+    width: 100%;
+    height: auto; /* Ensure height adjusts automatically */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    
+    .product-details {
+        flex: 2;
+    }
+    .card-title {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    .btn-add-to-cart {
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-top: 20px;
+    }
+    .specifications, .reviews {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .specifications h2, .reviews h2 {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+    .specifications ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .specifications li {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+    .specifications li:last-of-type {
+        border-bottom: none;
+    }
+    .reviews .review-item {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        margin-bottom: 10px;
+        transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .reviews .review-item:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: scale(1.02);
+    }
+    .reviews .review-author {
+        color: #007bff;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+    <div class="product-container">
+        <!-- Product Image -->
+        <div class="product-img">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+
+        <!-- Product Details -->
+        <div class="product-details">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text"><strong>Description:</strong> {{ product.description }}</p>
+                <a href="{% url 'add_to_cart' 'product' product.id %}" class="btn btn-primary btn-add-to-cart">Add To Cart</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Reviews -->
+    <div class="reviews mt-4">
+        <h2>Reviews</h2>
+        {% for review in product.reviews.all %}
+        <div class="review-item">
+            <p class="review-text">{{ review.content }}</p>
+            <p class="review-author">- {{ review.author }}</p>
+        </div>
+        {% empty %}
+       {{product.review}}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
+{% endblock %}
